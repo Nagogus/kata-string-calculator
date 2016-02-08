@@ -1,11 +1,29 @@
 {
-  "name": "package",
-  "version": "0.0.0",
-  "dependencies": {},
+  "name": "kata-string-calculator",
+  "version": "1.0.0",
+  "description": "http://osherove.com/tdd-kata-1/",
+  "main": "karma.conf.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nagogus/kata-string-calculator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nagogus/kata-string-calculator/issues"
+  },
+  "homepage": "https://github.com/Nagogus/kata-string-calculator#readme",
   "devDependencies": {
-	"karma": ">=0.10.8",
-	"karma-commonjs": ">=0.0.2",
-    	"karma-phantomjs-launcher": ">=0.1.0",
-	"phantomjs": ">=1.9.2-5"
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.19",
+    "karma-jasmine": "^0.3.7",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "phantomjs-prebuilt": "^2.1.4"
   }
 }

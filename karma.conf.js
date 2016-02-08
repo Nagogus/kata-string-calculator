@@ -9,8 +9,7 @@ module.exports = function (config) {
 				//'karma-firefox-launcher',
 				'karma-phantomjs-launcher',
 				//'karma-ng-html2js-preprocessor',
-				//'karma-junit-reporter',
-				'karma-commonjs'
+				//'karma-junit-reporter',				
 			],
 
 			// base path, that will be used to resolve files and exclude

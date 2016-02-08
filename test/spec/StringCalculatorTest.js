@@ -31,6 +31,7 @@ describe('StringCalculator', function() {
 
   it('should support custom separator', function() {
     expect(calc.add('//;\n5;7;3')).to.equal(15);
+    expect(calc.add('//%\n5%7%3')).to.equal(15);
   })
 
   it('should support custom separator together with other separators', function() {
@@ -38,4 +39,23 @@ describe('StringCalculator', function() {
     expect(calc.add('//;\n5\n7;3,1')).to.equal(16);
   })
 
+  it('should throw exception if there is negative number in params', function() {
+    expect(calc.add.bind(calc, '5,-2,7')).to.throw("Negatives not allowed: -2");
+  })
+
+  it('should throw exception if there is negative numbers in params', function() {
+    expect(calc.add.bind(calc, '5,-2,-10')).to.throw("Negatives not allowed: -2, -10");
+  })
+
+  it('should throw exception if there is negative number in params and custom delimeter used', function() {
+    expect(calc.add.bind(calc, '//%\n5,-2%7')).to.throw("Negatives not allowed: -2");
+  })
+
+  it('should ignore number greater than 1000', function() {
+    expect(calc.add('5,2,1001')).to.equal(7);
+  })
+
+  it('should accept custom delimeters of any length', function() {
+    expect(calc.add('//[***]\n5***2***9')).to.equal(16);
+  })
 });
