@@ -1,51 +1,66 @@
 'use strict';
 
 function StringCalculator() {
+  this.numbersInput = null;
+  this.delimeterInput = null;
+  this.numbers = null;
 };
 
-StringCalculator.prototype._parseInput = function(input) {
-  var customDelimeter = '',
-  regexp = new RegExp("\n|\,");  
-
-  if(/\/\/(.+)\n/.test(input)) {    
-    customDelimeter = '|' + this.escapeForRegExp(RegExp.$1) + '';
-    input = input.replace(/\/\/(.+)\n/, '');    
-  }  
-  regexp = new RegExp("\n|\," + customDelimeter);  
-  return input.split(regexp);
-}
-
-StringCalculator.prototype.escapeForRegExp = function(value) {
-  if(value.charAt(0) === '[' && value.charAt(value.length - 1) === ']') {
-    value = value.slice(1).slice(0, -1);
-    console.log(value);
-  }
-  return value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-}
-
 StringCalculator.prototype.add = function (input) {
-  if(!input) {
+  if (!input) {
     return 0;
-  }
-  var numbers = this._parseInput(input),
-  negatives = [],
+  }  
+  this.prepareInput(input);
+  var numbers = this.numbers,
+  sum = 0,
   ii = numbers.length,
-  i, sum, number;
+  negatives = [],
+  i, number;
 
-  for(i = 0, sum = 0; i<ii; i++) {   
-    number = numbers[i];
-    if(number < 0) {
+  for (i = 0; i < ii; i++) {
+    number = parseInt(numbers[i], 10);
+    if (number < 0) {
       negatives.push(number);
     }
-    if(number > 1000) {
+    if (number > 1000) {
       continue;
     }
-    sum += parseInt(number, 10);
+    sum = sum + number;
   }  
 
-  if(negatives.length > 0) {
-    throw new Error("Negatives not allowed: " + negatives.join(', '));
+  if (negatives.length) {
+    throw "Negatives not allowed: " + negatives.join(', ');
   }
 
   return sum;
+}
+
+StringCalculator.prototype.parseDelimeter = function(delimeterInput) {
+  var delimeterInput = this.delimeterInput,
+  matches;  
+  if (!delimeterInput) {
+    return /,|\n/;
+  } else if (matches = delimeterInput.match(/\[(.+?)\]/)) {    
+    return matches[1];
+  } else if (matches = delimeterInput.match(/\/\/(.*)/)) {        
+    return new RegExp(',|\\n|\\' + matches[1]);
+  }
+    
+  return customDelimeter;
+}
+
+StringCalculator.prototype.prepareInput = function(input) {
+  var delimeter;
+  if (/\/\//.test(input)) {
+    this.delimeterInput = input.substr(0, input.indexOf('\n'));
+    this.numbersInput = input.substr(input.indexOf('\n') + 1);           
+  } else {
+    this.numbersInput = input;        
+  }   
+  delimeter = this.parseDelimeter(this.delimeterInput);
+  this.numbers = this.parseNumbers(this.numbersInput, delimeter);  
+}
+
+StringCalculator.prototype.parseNumbers = function(numbersInput, delimeter) {    
+  return numbersInput.split(delimeter);
 }
